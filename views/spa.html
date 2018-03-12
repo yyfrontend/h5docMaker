@@ -1,0 +1,105 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="apple-touch-fullscreen" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no,email=no">
+  <meta http-equiv="cache-control" content="max-age=0">
+  <meta http-equiv="cache-control" content="no-cache">
+  <meta http-equiv="expires" content="0">
+  <meta http-equiv="pragma" content="no-cache">
+  <title><%=title%></title>
+  <link rel="shortcut icon" href="//pgbilin.yy.com/statictpl/static/favicon.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <!-- build:css css/vendor.css -->
+  <link rel="stylesheet" href="//pgbilin.yy.com/statictpl/static/main.css">
+  <% if (user.project === 'bilin') { %>
+  <link rel="stylesheet" href="//pgbilin.yy.com/bilin18/statictpl/css/native.css?v=gulpVersionNeedReplaced">
+  <% } else { %>
+  <% } %>
+  <!-- endbuild -->
+</head>
+
+<body>
+  <div id="wx_pic"><img src=""></div>
+  <div class="content-container">
+        <% pages.forEach(function (page) { %>
+            <% page.elements.forEach(function (element) { %>
+              <% if (element.type === 'bg') { %>
+                <img class="ele-bg" src="<%= element['imgSrc'] %>">
+              <% } %>
+            <% }) %>
+            <div id="resize-top-bottom" class="resize-container mediate flat">
+              <section id="canvas" style="height:<%= canvasHeight %>px">
+              <% page.elements.forEach(function (element) { %>
+                <% if (element.type === 'pic') { %>
+                  <div class="ele" style="z-index: <%= element['zindex'] %>; width: <%= element['width'] %>px; height: <%= element['height'] %>px; left: <%= element['left'] %>px; top: <%= element['top'] %>px;">
+                    <div>
+                      <% if (element.href) { %><a target="_blank" href="<%= element['href'].match(/^[A-Za-z]+:\/\//i) ? element['href'] : '//' + element['href'] %>"><img class="ele-img" src="<%= element['imgSrc'] %>" style="opacity: <%= element['opacity'] / 100 %>; transform: rotate(<%= element['transform'] %>deg)"></a><%} else {%><img class="ele-img" src="<%= element['imgSrc'] %>" style="opacity: <%= element['opacity'] / 100 %>; transform: rotate(<%= element['transform'] %>deg)"><%}%>
+                    </div>
+                  </div>
+                <% } %>
+                <% if (element.type === 'text') { %>
+                  <div class="ele" style="z-index: <%= element['zindex'] %>; width: <%= element['width'] %>px; left: <%= element['left'] %>px; top: <%= element['top'] %>px;">
+                    <div>
+                        <div style="opacity: <%= element['opacity'] / 100 %>; transform: rotate(<%= element['transform'] %>deg); color: <%= element['color'] %>; text-align: <%= element['textAlign'] %>; line-height: <%= element['lineHeight'] %>; font-family: <%= element['fontFamily'] %>; font-size: <%= element['fontSize'] %>px; white-space: pre-line;font-weight: <%= element['fontWeight'] || 'normal' %>"><% if (element.href) { %><a style="color: <%= element['color'] %>;" target="_blank" href="<%= element['href'].match(/^[A-Za-z]+:\/\//i) ? element['href'] : '//' + element['href'] %>"><%= element.text %></a><%} else {%><%= element.text %><%}%></div>
+                    </div>
+                  </div>
+                <% } %>
+              <% }) %>
+        </section>
+        <% }) %>
+      </div>
+  </div>
+  <!-- build:js scripts/vendor.js -->
+  <script src="//dl1.vip.yystatic.com/assets/js/zepto.min.js"></script>
+  <% if (user.project === 'bilin') { %>
+  <script src="//pgbilin.yy.com/bilin18/statictpl/js/native.js?v=gulpVersionNeedReplaced"></script>
+  <% } else { %>
+  <% } %>
+  <script>
+  (function () {
+    var designW = 320
+    var designH = 508
+    var designR = designW / designH
+
+    var actualW = document.documentElement.clientWidth
+    var actualH = document.documentElement.clientHeight
+    var actualR = actualW / actualH
+
+    var scale = (actualR > designR) ? (actualH / designH) : (actualW / designW)
+    var style = 'width: ' + designW + 'px;overflow-x: hidden;overflow-y: auto; -webkit-transform: scale(' + scale + '); transform: scale(' + scale + '); '
+    if (actualW < designW) {
+      if (actualR > designR) {
+        style += 'margin-left: ' + (actualW - designW) / 2 + 'px;'
+      } else {
+        style += '-webkit-transform-origin: left; transform-origin: left;'
+      }
+    }
+
+    var containers = document.getElementsByClassName('resize-container')
+    var i
+    for (i = 0; i < containers.length; i++) {
+      containers[i].setAttribute('style', style)
+    }
+
+    var maxHeight = 0
+    $('.ele').forEach((item) => {
+      maxHeight = Math.max($(item)[0].offsetHeight, maxHeight)
+    })
+    $('#canvas').height(maxHeight)
+
+    var delHeight = ($('#resize-top-bottom').height() - actualH) / scale
+    var topbottom = Math.floor(delHeight / 2)
+    $('#resize-top-bottom').css({
+      top: topbottom,
+      bottom: topbottom
+    })
+  })()
+  </script>
+  <!-- endbuild -->
+</body>
+
+</html>

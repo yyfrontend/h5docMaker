@@ -1,0 +1,2 @@
+export const SET_ERROR_INFO = 'SET_ERROR_INFO'
+export const SET_PROJECT_INFO = 'SET_PROJECT_INFO'

@@ -1,0 +1,34 @@
+/**
+ * Created by zhengguorong on 2016/11/30.
+ */
+import * as http from '../util/http'
+
+const getUserThemeList = (type = 'h5') => {
+  return http.get('/api/pages?type=' + type)
+}
+const getPageByThemeId = (id) => {
+  return http.get('/api/pages/' + id)
+}
+const saveTheme = (theme) => {
+  return http.post('/api/pages', theme)
+}
+const delTheme = (theme) => {
+  return http.del('/api/pages', theme)
+}
+const updateTheme = (theme) => {
+  return http.put('/api/pages/' + theme._id, theme)
+}
+const uploadTheme = (theme) => {
+  return http.put('/api/pages/upload/' + theme._id, theme)
+}
+
+const uploadPic = (data) => {
+  return http.post('/api/upload', data)
+}
+
+const getPicListByThemeId = (_id) => {
+  return http.get('/api/upload/theme/' + _id)
+}
+module.exports = {
+  getUserThemeList, saveTheme, updateTheme, uploadTheme, uploadPic, getPageByThemeId, getPicListByThemeId, delTheme
+}
