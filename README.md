@@ -1,5 +1,9 @@
 ## h5在线编辑平台
 
+forked from h5maker
+
+update and fix bug
+
 ### 技术架构
 > 前端：vue2.0 + vue-router + vuex + axios + Element ui
 
